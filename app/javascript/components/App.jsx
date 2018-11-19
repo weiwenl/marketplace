@@ -11,12 +11,11 @@ class App extends React.Component {
   }
 
   render() {
-    console.log("rendering");
     return (
       <div>
-
           <Switch>
             <Route exact path="/" component={Search} />
+            
           </Switch>
 
       </div>
