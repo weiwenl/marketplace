@@ -1,5 +1,6 @@
 import React from "react";
 
+import SingleProduct from "../Features/SingleProduct"
 
 class TopProduct extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class TopProduct extends React.Component {
     return (
       <div>
         <h1>Games Marketplace</h1>
-        {this.state.games}
+        <SingleProduct games={this.state.games} />
         <footer>
           <h6>Insert link here: Top Products</h6>
           <h6>Insert link here: Reviews</h6>
