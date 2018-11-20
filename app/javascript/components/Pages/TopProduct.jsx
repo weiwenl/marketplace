@@ -37,10 +37,6 @@ class TopProduct extends React.Component {
       <div>
         <h1>Games Marketplace</h1>
         <SingleProduct games={this.state.games} />
-        <footer>
-          <h6>Insert link here: Top Products</h6>
-          <h6>Insert link here: Reviews</h6>
-        </footer>
       </div>
     );
   }
