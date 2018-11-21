@@ -1,7 +1,10 @@
 import React from "react";
 import Form from "../Form/Form";
 import { hot } from 'react-hot-loader';
-import ProductList from '../Pages/ProductList'
+import ProductList from '../Pages/ProductList';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
 
 class Search extends React.Component {
   constructor() {
@@ -37,14 +40,15 @@ class Search extends React.Component {
         let games = data.games.map(game => {
           return(
             <div key={game.name}>
+              <img src={game.image_url} alt={game.name} />
               <h2>Name: {game.name}</h2>
+              <h2>Price: {game.price}</h2>
+
               <h2>Year published: {game.year_published}</h2>
               <h2>Players: {game.min_players}-{game.max_players}</h2>
               <h2>Playtime: {game.min_playtime}-{game.max_playtime}</h2>
               <h2>Age: {game.min_age}</h2>
-              <img src={game.image_url} alt={game.name} />
               <h3>Description: {game.description}</h3>
-              <h2>Price: {game.price}</h2>
             </div>
           );
         });
@@ -55,9 +59,14 @@ class Search extends React.Component {
   render() {
     return (
       <div>
-        <h1>Searching</h1>
         <Form changed={this.changeHandler} search={this.submitHandler} />
-        {this.state.queryData}
+        <Toolbar>
+          <Grid justify="space-between" container  spacing={24}>
+            <Grid item xs={4}>
+                    <Paper><ProductList list={this.state.queryData} /></Paper>
+            </Grid>
+          </Grid>
+        </Toolbar>
       </div>
     );
   }

@@ -11,7 +11,7 @@ class TopProduct extends React.Component {
   }
 
   componentDidMount() {
-    const url = `https://www.5colorcombo.com/api/search?order-by=popularity&ascending=false`;
+    const url = `https://beta.5colorcombo.com/api/search?order-by=popularity&ascending=false`;
     fetch(url, {
       method: "GET"
     })
@@ -35,7 +35,7 @@ class TopProduct extends React.Component {
   render() {
     return (
       <div>
-        <h1>Games Marketplace</h1>
+        <h1>The top 30 games to play</h1>
         <SingleProduct games={this.state.games} />
       </div>
     );

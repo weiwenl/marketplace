@@ -2,7 +2,7 @@ import React from "react";
 
 const SingleProduct = (props) => {
   console.log("this is prpppppp", props.games);
-  const topGames = props.games.map((g,index) =>
+  let topGames = props.games.map((g,index) =>
     (
       <div key={index}>
         <h2>{g.key}</h2>
