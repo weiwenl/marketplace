@@ -4,10 +4,10 @@ import Search from "../Search/Search";
 
 const Form = props => {
   return (
-    <div>
-      <input type="text" onChange={props.changed} />
+    <form>
+      <input type="text" onChange={props.changed} placeholder="Search"/>
       <button onClick={props.search}>Search</button>
-    </div>
+    </form>
   );
 };
 

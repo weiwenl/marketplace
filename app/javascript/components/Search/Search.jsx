@@ -1,91 +1,63 @@
 import React from "react";
 import Form from "../Form/Form";
-import axios from "axios";
 import { hot } from 'react-hot-loader';
+import ProductList from '../Pages/ProductList'
 
 class Search extends React.Component {
   constructor() {
     super();
     this.state = {
-      keyword: "",
-      items: [], //will contain all the items that fall in the search
-      isLoading: true,
-      errors: null
+      query: "",
+      queryData: [] //will contain all the items that fall in the search
+      //isLoading: true
     };
     this.changeHandler = this.changeHandler.bind(this);
-    this.searchHandler = this.searchHandler.bind(this);
+    this.submitHandler = this.submitHandler.bind(this);
   }
 
-  changeHandler(){
-    console.log("keyword", event.target.value);
-    this.setState({ keyword: event.target.value });
+  changeHandler(event){
+    console.log("query", event.target.value);
+    this.setState({ query: event.target.value });
   };
 
-  searchHandler(){
+  submitHandler(event){
+    event.preventDefault();
     console.log("click");
     const reactThis = this;
-    var reqListener = function() {
-      console.log("Getting this back:", this.responseText);
-      const search = JSON.parse(this.responseText);
-      console.log("search", search);
+    const QueryURL = 'https://beta.5colorcombo.com/api/search?name=' + encodeURI(reactThis.state.query);
+    console.log("QueryURL",QueryURL);
 
-      reactThis.setState({ items: search });
-      console.log(reactThis.state.items.games);
-    };
-
-
-    let ajaxURL = `https://beta.5colorcombo.com/search?name=
-    ${reactThis.state.keyword}`;
-    console.log("newthis",reactThis);
-    console.log(ajaxURL);
-
-    const oReq = new XMLHttpRequest();
-
-    oReq.addEventListener("load", reqListener);
-
-    oReq.open("GET", ajaxURL);
-    oReq.send();
+    fetch(QueryURL, {
+      method: "GET"
+    })
+      .then(results => {
+        return results.json();
+      })
+      .then(data => {
+        let games = data.games.map(game => {
+          return(
+            <div key={game.name}>
+              <h2>Name: {game.name}</h2>
+              <h2>Year published: {game.year_published}</h2>
+              <h2>Players: {game.min_players}-{game.max_players}</h2>
+              <h2>Playtime: {game.min_playtime}-{game.max_playtime}</h2>
+              <h2>Age: {game.min_age}</h2>
+              <img src={game.image_url} alt={game.name} />
+              <h3>Description: {game.description}</h3>
+              <h2>Price: {game.price}</h2>
+            </div>
+          );
+        });
+        this.setState({ queryData: games });
+      });
   };
 
-  ComponentDidMount() {
-    axios
-      .get(
-        `https://www.5colorcombo.com/search?name=${reactThis.state.keyword}`)
-      .then(response => {
-        this.setState({
-          items: response.games,
-          isLoading: false
-        });
-        console.log("axios response", response);
-      })
-      .catch(error => this.setState({ error, isLoading: true}));
-  }
-
   render() {
-      const { items, isLoading } = this.state;
-
     return (
       <div>
-        <h2>Search</h2>
-        <Form changed={this.changeHandler} search={this.searchHandler} />
-
-          {!isLoading ? (
-              items.games.map((item,index) => {
-                const { id, name, description, image_url } = item;
-                return (
-                  <div key={id}>
-                    <p>{name}</p>
-                    <div>
-                      <img src={image_url} alt={name} />
-                    </div>
-                    <p>{description}</p>
-                    <hr />
-                  </div>
-                );
-              })
-            ) : (
-              <p>Loading...</p>
-            )}
+        <h1>Searching</h1>
+        <Form changed={this.changeHandler} search={this.submitHandler} />
+        {this.state.queryData}
       </div>
     );
   }
